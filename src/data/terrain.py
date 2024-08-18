@@ -10,7 +10,7 @@ terrains = {
         # map icon display
         "bg_colour": darken(desaturate(GREEN)),
         "text_colour": darken(darken(desaturate(GREEN))),
-        "text": "/\\/\\"
+        "text": "/\\ /\\"
     },
     "grass": {
         "slowdown_factor": 0,
