@@ -49,7 +49,7 @@ terrains["sea"] = TerrainType(
     defence_bonus=0,
 
     bg_colour=WATER_COLOUR,
-    icon_text="~~",
+    icon_text="~ ~",
     text_colour=WATER_COLOUR.darken()
 )
 

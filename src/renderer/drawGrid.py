@@ -1,4 +1,4 @@
-from scenes.battle import Grid, Tile
+from utils.grid import Grid, Tile
 from settings import TILE_SIZE
 from utils.colour import BLACK
 import pygame as pg

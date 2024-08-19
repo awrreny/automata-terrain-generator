@@ -1,6 +1,6 @@
 import pygame as pg
 from settings import *
-import scenes.battle
+import utils.grid
 import renderer.drawGrid
 
 
@@ -15,7 +15,7 @@ def main():
     pg.display.set_caption(TITLE)
     clock = pg.time.Clock()
 
-    grid = scenes.battle.Grid(12, 8)
+    grid = utils.grid.Grid(12, 8)
 
     while True:
         renderer.drawGrid.draw_grid(grid, screen, TILE_FONT)
