@@ -1,10 +1,17 @@
 from utils.grid import TerrainGrid
 from settings import TILE_SIZE
 from utils.colour import BLACK
+from typing import Tuple
 import pygame as pg
 import random
 
-random_texture_seed = random.randrange(1000)
+def randomise_pos(x, y, seed, factor=12):
+    random.seed(seed)
+    return (
+        x + random.randint(-TILE_SIZE//factor, TILE_SIZE//factor),
+        y + random.randint(-TILE_SIZE//factor, TILE_SIZE//factor),
+    )
+
 
 
 def draw_terrain(grid: TerrainGrid, screen, font: pg.font.Font, startCoords=(0,0)):
@@ -23,11 +30,7 @@ def draw_terrain(grid: TerrainGrid, screen, font: pg.font.Font, startCoords=(0,0
         textRect = textSurface.get_rect()
 
         # slightly randomise position. this seed will be different for different tiles but the same for the same tile
-        random.seed((random_texture_seed << 16) ^ (x << 8) ^ y)
-        textRect.center = (
-            tileRect.centerx + random.randint(-TILE_SIZE//11, TILE_SIZE//11),
-            tileRect.centery + random.randint(-TILE_SIZE//11, TILE_SIZE//11)
-        )
+        textRect.center = randomise_pos(*tileRect.center, (x<<8)^y)
 
         screen.blit(textSurface, textRect)
 
