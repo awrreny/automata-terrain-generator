@@ -1,30 +1,29 @@
 # each colour is a 3-tuple (R, G, B)
-
-def brighten(colour, factor=0.1):
-    return tuple(
-        int(colourVal + (256-colourVal)*factor)
-        for colourVal in colour
-    )
+import pygame as pg
 
 
-def darken(colour, factor=0.1):
-    return tuple(
-        int(colourVal*(1-factor))
-        for colourVal in colour
-    )
+
+class ColorMore(pg.Color):
+    _WHITE = pg.Color(255, 255, 255)
+    _BLACK = pg.Color(0, 0, 0)
+
+    def brighten(self, factor=0.1):
+        return self.lerp(ColorMore._WHITE, factor)
 
 
-# done by moving each R, G, B value closer to each other
-# factor of 1 makes it grey
-def desaturate(colour, factor=0.2):
-    meanValue = sum(colour)/3
-    return tuple(
-        int(
-            colourVal * (1-factor) + meanValue * factor
-        )
-        for colourVal in colour
-    )
+    def darken(self, factor=0.1):
+        return self.lerp(ColorMore._BLACK, factor)
+
+
+    def desaturate(self, factor=0.1):
+        return self.lerp(self.grayscale(), factor)
+
+
+WHITE = ColorMore(255, 255, 255)
+BLACK = ColorMore(0, 0, 0)
+RED = ColorMore(255, 0, 0)
+GREEN = ColorMore(0, 255, 0)
+BLUE = ColorMore(0, 0, 255)
 
 
 # idea: blending colours for borders?
-# maybe make colour class

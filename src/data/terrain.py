@@ -1,5 +1,8 @@
 from settings import *
-from utils.colour import darken, brighten, desaturate
+from utils.colour import *
+
+
+GRASS_COLOUR = GREEN.desaturate(0.5)
 
 
 terrains = {
@@ -8,8 +11,8 @@ terrains = {
         "defence_bonus": 2,  # maybe weaken bonus for flying units
 
         # map icon display
-        "bg_colour": darken(desaturate(GREEN)),
-        "text_colour": darken(darken(desaturate(GREEN))),
+        "bg_colour": GRASS_COLOUR.darken(),
+        "text_colour": GRASS_COLOUR.darken(0.2),
         "text": "/\\ /\\"
     },
     "grass": {
@@ -17,7 +20,7 @@ terrains = {
         "defence_bonus": 1,
 
         # map icon display
-        "bg_colour": desaturate(GREEN),
+        "bg_colour": GRASS_COLOUR,
         "text_colour": WHITE,
         "text": ""
     }

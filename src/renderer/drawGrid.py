@@ -1,8 +1,8 @@
 from scenes.battle import Grid, Tile
-from settings import TILE_SIZE, BLACK
+from settings import TILE_SIZE
+from utils.colour import BLACK
 import pygame as pg
 
-from utils.colour import darken
 
 
 def draw_grid(grid: Grid, screen, font: pg.font.Font, startCoords=(0,0)):
@@ -19,7 +19,7 @@ def draw_grid(grid: Grid, screen, font: pg.font.Font, startCoords=(0,0)):
         tileRect = pg.Rect(startX + x*TILE_SIZE, startY + y*TILE_SIZE, TILE_SIZE, TILE_SIZE)
         pg.draw.rect(screen, bgColour, tileRect)
 
-        pg.draw.rect(screen, darken(bgColour, 0.015), tileRect, 1)
+        pg.draw.rect(screen, bgColour.darken(0.015), tileRect, 1)
 
         textSurface = font.render(text, True, textColour)
         textRect = textSurface.get_rect()
