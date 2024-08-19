@@ -8,9 +8,9 @@ import pygame as pg
 def draw_grid(grid: Grid, screen, font: pg.font.Font, startCoords=(0,0)):
     startX, startY = startCoords
     for tile, x, y in grid.tiles():
-        bgColour = tile.terrainData["bg_colour"]
-        textColour= tile.terrainData["text_colour"]
-        text = tile.terrainData["text"]
+        bgColour = tile.terrainType.bg_colour
+        textColour= tile.terrainType.text_colour
+        text = tile.terrainType.icon_text
 
         if tile.object is not None:
             pass

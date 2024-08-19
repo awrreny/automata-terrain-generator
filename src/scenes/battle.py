@@ -5,10 +5,10 @@ import random
 
 
 class Tile:
-    def __init__(self, terrain="grass") -> None:
-        if terrain not in terrains.keys():
-            raise ValueError(f"")
-        self.terrainData = terrains[terrain]
+    def __init__(self, terrain_type="grass") -> None:
+        if terrain_type not in terrains.keys():
+            raise ValueError(f"Invalid terrain type: {terrain_type}")
+        self.terrainType = terrains[terrain_type]
 
         # object on the tile e.g player unit, enemy unit, tetra (blockade)
         self.object = None
