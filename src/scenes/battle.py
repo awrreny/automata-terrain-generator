@@ -19,7 +19,7 @@ class Grid:
     def __init__(self, width, height, defaultTerrainType="forest") -> None:
         self.grid = [
             [
-                Tile(random.choice(["grass","forest"]))
+                Tile(random.choice(["grass","forest", "sea", "grass", "grass"]))
                 for j in range(width)
             ]
             for i in range(height)

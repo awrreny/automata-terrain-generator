@@ -3,6 +3,7 @@ from utils.colour import *
 
 
 GRASS_COLOUR = GREEN.desaturate(0.5)
+WATER_COLOUR = BLUE.desaturate(0.3).brighten(0.4)
 
 class TerrainType:
     def __init__(self, name: str, slowdown_factor: int, defence_bonus: int, bg_colour, icon_text, text_colour)  -> None:
@@ -39,5 +40,16 @@ terrains["grass"] = TerrainType(
     bg_colour=GRASS_COLOUR,
     icon_text="",
     text_colour=WHITE,
+)
+
+terrains["sea"] = TerrainType(
+    name="sea",
+
+    slowdown_factor=999,
+    defence_bonus=0,
+
+    bg_colour=WATER_COLOUR,
+    icon_text="~~",
+    text_colour=WATER_COLOUR.darken()
 )
 
