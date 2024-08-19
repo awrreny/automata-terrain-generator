@@ -3,23 +3,12 @@ from typing import Tuple, Generator
 import random
 
 
-
-class Tile:
-    def __init__(self, terrain_type="grass") -> None:
-        if terrain_type not in terrains.keys():
-            raise ValueError(f"Invalid terrain type: {terrain_type}")
-        self.terrainType = terrains[terrain_type]
-
-        # object on the tile e.g player unit, enemy unit, tetra (blockade)
-        self.object = None
-
-
-# grid is a 2D list containing Tile objects
-class Grid:
+# grid containing TerrainType object from terrains dict
+class TerrainGrid:
     def __init__(self, width, height, defaultTerrainType="forest") -> None:
         self.grid = [
             [
-                Tile(random.choice(["grass","forest", "sea", "grass", "grass"]))
+                terrains[random.choice(["grass", "grass", "grass", "forest", "sea"])]
                 for j in range(width)
             ]
             for i in range(height)
@@ -36,9 +25,7 @@ class Grid:
         return self.grid[y][x]
     
 
-    def tiles(self) -> Generator[Tuple[int, int, Tile], None, None]:
+    def tiles(self) -> Generator[Tuple[int, int, str], None, None]:
         for y, row in enumerate(self.grid):
             for x, tile in enumerate(row):
                 yield (tile, x, y)
-  
-            

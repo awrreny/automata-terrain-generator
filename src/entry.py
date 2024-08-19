@@ -15,10 +15,10 @@ def main():
     pg.display.set_caption(TITLE)
     clock = pg.time.Clock()
 
-    grid = utils.grid.Grid(12, 8)
+    grid = utils.grid.TerrainGrid(12, 8)
 
     while True:
-        renderer.drawGrid.draw_grid(grid, screen, TILE_FONT)
+        renderer.drawGrid.draw_terrain(grid, screen, TILE_FONT)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()

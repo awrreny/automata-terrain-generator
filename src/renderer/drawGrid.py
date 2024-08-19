@@ -1,20 +1,16 @@
-from utils.grid import Grid, Tile
+from utils.grid import TerrainGrid
 from settings import TILE_SIZE
 from utils.colour import BLACK
 import pygame as pg
 
 
 
-def draw_grid(grid: Grid, screen, font: pg.font.Font, startCoords=(0,0)):
+def draw_terrain(grid: TerrainGrid, screen, font: pg.font.Font, startCoords=(0,0)):
     startX, startY = startCoords
-    for tile, x, y in grid.tiles():
-        bgColour = tile.terrainType.bg_colour
-        textColour= tile.terrainType.text_colour
-        text = tile.terrainType.icon_text
-
-        if tile.object is not None:
-            pass
-            # TODO
+    for terrain, x, y in grid.tiles():
+        bgColour = terrain.bg_colour
+        textColour= terrain.text_colour
+        text = terrain.icon_text
 
         tileRect = pg.Rect(startX + x*TILE_SIZE, startY + y*TILE_SIZE, TILE_SIZE, TILE_SIZE)
         pg.draw.rect(screen, bgColour, tileRect)
