@@ -15,7 +15,7 @@ def main():
     pg.display.set_caption(TITLE)
     clock = pg.time.Clock()
 
-    grid = utils.grid.TerrainGrid(12, 8)
+    grid = utils.grid.TerrainGrid(WIDTH//TILE_SIZE, HEIGHT//TILE_SIZE)
 
     while True:
         renderer.drawGrid.draw_terrain(grid, screen, TILE_FONT)
