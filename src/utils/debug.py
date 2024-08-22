@@ -1,4 +1,4 @@
-def printgrid(grid):
+def printgrid(grid, binary=False):
     maxlen = 0
 
     #get longest item
@@ -7,7 +7,10 @@ def printgrid(grid):
             maxlen = max(maxlen, len(str(tile)))
 
     for row in grid:
-        print(*[str(tile).ljust(maxlen) for tile in row])
+        if binary:
+            print(*[("██" if tile == 1 else " ") for tile in row],sep="")  #easier viewing of binary grids
+        else:
+            print(*[str(tile).ljust(maxlen) for tile in row])
 
 
 # grid = [[1, 2], [3, 4]]

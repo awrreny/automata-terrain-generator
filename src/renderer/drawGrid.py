@@ -5,7 +5,7 @@ from typing import Tuple
 import pygame as pg
 import random
 
-def randomise_pos(x, y, seed, factor=12):
+def randomise_pos(x, y, seed, factor=15):
     random.seed(seed)
     return (
         x + random.randint(-TILE_SIZE//factor, TILE_SIZE//factor),

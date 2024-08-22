@@ -16,6 +16,11 @@ class TerrainType:
         self.bg_colour = bg_colour
         self.icon_text = icon_text
         self.text_colour = text_colour
+    
+
+    def __repr__(self) -> str:
+        if self.name == "grass": return " "  # probably temporary
+        return self.name[0].upper()
 
 
 terrains = dict()
