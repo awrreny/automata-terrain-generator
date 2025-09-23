@@ -2,7 +2,7 @@
 
 Procedural 2D terrain generation using cellular automata rules (written in Python with Pygame).
 
-## How to use
+## How To Use
 
 Run with `python src/entry.py`, or `python -m src.entry` from the project root.
 
