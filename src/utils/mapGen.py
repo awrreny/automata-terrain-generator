@@ -1,38 +1,38 @@
 import random
 from copy import deepcopy
 from time import sleep
+from utils.debug import printgrid
+from data.terrain import terrains
 
-
-if __name__ == "__main__":
-    from debug import printgrid
-elif __name__ == "utils.mapGen":
-    # if opened from entry.py
-    from utils.debug import printgrid
-    from data.terrain import terrains
-else:
-    raise Exception("yeahh")
-
+# to run directly, python -m utils.mapGen
 
 def inBounds(x, y, width, height):
     return (x in range(width)) and (y in range(height))
 
 
-def getNeighbourProportion(grid, x, y):
+def getNeighbourProportion(grid, x, y, radius = 3):
+    """
+    Returns the proportion of neighbours (within a given radius) that are set to 1, weighted by euclidean distance (closer = more weight)
+    """
     height = len(grid)
     width = len(grid[0])
-    total = 0
-    count = 0
-    for dx in range(-3, 4):
-        for dy in range(-3, 4):
+    total_weight = 0
+    active_neighbor_weight = 0
+    for dx in range(-radius, radius + 1):
+        for dy in range(-radius, radius + 1):
+
             if dx == 0 and dy == 0: continue
             if not inBounds(x+dx, y+dy, width, height): continue
 
             weight = (dx*dx + dy*dy)**(-0.5)
-            total += weight
+            total_weight += weight
             if grid[y+dy][x+dx]:
-                count += weight
+                active_neighbor_weight += weight
 
-    return count/total
+    if total_weight == 0:
+        return 0
+
+    return active_neighbor_weight / total_weight
 # king-move neighbours
 # def neighbours(grid, x, y):
 #     height = len(grid)
@@ -65,50 +65,42 @@ def getNeighbourProportion(grid, x, y):
 #             yield grid[y+dy][x+dx]
 
 
-def automataGen(width, height, initialChance, stayAliveProp = 0.4, birthProp = 0.4, iterations=1, log=False):
-    # generate random grid
+def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_threshold = 0.4, iterations=1, log=False):
     grid = [
         [
-            1 if random.random() < initialChance else 0
+            1 if random.random() < initial_density else 0
             for j in range(width)
         ]
         for i in range(height)
     ]
 
-
-    for i in range(iterations):
+    for _ in range(iterations):
         if log:
             print()
             printgrid(grid, binary=True)
             print("-"*100,end="")
 
+            # to make the generation process visible
             sleep(0.1)
 
-        gridSnapshot = deepcopy(grid)
+        grid_snapshot = deepcopy(grid)
 
-        filledProportion = (1/(width*height)) * sum(sum(row) for row in grid)
+        current_filled_ratio = sum(sum(row) for row in grid) / (width*height)
 
-        # scales automata rules to encourage filledProportion to be closer to initialChance
-        stayAlivePropScaled = (stayAliveProp/initialChance) * filledProportion
-        birthPropScaled = (birthProp/initialChance) * filledProportion
+        # scales automata rules to encourage current_filled_ratio to be closer to initial_density
+        scaled_survival_threshold = (survival_threshold/initial_density) * current_filled_ratio
+        scaled_birth_threshold = (birth_threshold/initial_density) * current_filled_ratio
 
         for y in range(height):
             for x in range(width):
-                # apply automata rules
-                # total = 0
-                # count = 0
-                # for tile in neighbours(gridSnapshot, x, y):
-                #     if tile == 1:
-                #         count += 1
-                #     total += 1
-                neighbourProportion = getNeighbourProportion(gridSnapshot, x, y)
+                neighbourProportion = getNeighbourProportion(grid_snapshot, x, y)
 
-                if gridSnapshot[y][x]:
-                    grid[y][x] = 1 if neighbourProportion > stayAlivePropScaled else 0
+                if grid_snapshot[y][x]:
+                    grid[y][x] = 1 if neighbourProportion > scaled_survival_threshold else 0
                 else:
-                    grid[y][x] = 1 if neighbourProportion > birthPropScaled else 0
+                    grid[y][x] = 1 if neighbourProportion > scaled_birth_threshold else 0
         
-        if grid == gridSnapshot:  # no change in an iteration
+        if grid == grid_snapshot:  # no change in an iteration
             break
 
     if log:
@@ -117,8 +109,10 @@ def automataGen(width, height, initialChance, stayAliveProp = 0.4, birthProp = 0
     return grid
     
 
-# given a grid, a binary grid, and a terrain type, returns a new grid which is the binary grid 'overlayed' onto the original grid, using the terrain type
 def applyGrid(grid, terrainType, bgrid):
+    """
+    Given a terrain grid, a binary grid, and a terrain type, returns a new grid which is the binary grid 'overlayed' onto the original grid, using the terrain type
+    """
     for y, row in enumerate(bgrid):
         for x, tile in enumerate(row):
             if tile==1: 
@@ -128,7 +122,7 @@ def applyGrid(grid, terrainType, bgrid):
 
 
 
-def generateGrid(width, height, safeCorners=False, safeCornerSize=3, forestInitialChance=0.4, forestReqProportion=0.4, forestIterations=1, lakeSpawnTries=3, lakeClusterSize=12):
+def generateGrid(width, height):
     
     grid = [
         [
@@ -140,46 +134,18 @@ def generateGrid(width, height, safeCorners=False, safeCornerSize=3, forestIniti
 
 
     forestGrid = automataGen(width, height, 0.45,
-                             stayAliveProp=0.3,
-                             birthProp=0.65,
+                             survival_threshold=0.3,
+                             birth_threshold=0.65,
                              iterations=25,
                              log=True)
     grid = applyGrid(grid, terrains["forest"], forestGrid)
 
 
     seaGrid = automataGen(width, height, 0.09,
-                             stayAliveProp=0.1,
-                             birthProp=0.35,
-                             iterations=25)
+                             survival_threshold=0.1,
+                             birth_threshold=0.35,
+                             iterations=25,
+                             log=True)
     grid = applyGrid(grid, terrains["sea"], seaGrid)
 
     return grid
-
-
-
-    
-
-
-# printgrid(automataGen(20, 10, 0.45,
-#                       stayAliveProp=0.3,
-#                       birthProp=0.65,
-#                       iterations=100))
-
-# printgrid(automataGen(20, 10, 0.5,
-#                       stayAliveProp=0.6,
-#                       birthProp=0.4,
-#                       iterations=50))
-# printgrid(automataGen(20, 10, 0.5,
-#                       stayAliveProp=0.5,
-#                       birthProp=0.5,
-#                       iterations=50))
-
-
-# printgrid(automataGen(20, 10, 0.09,
-#                       stayAliveProp=0.1,
-#                       birthProp=0.35,
-#                       iterations=100,
-#                       log=True))
-
-
-# printgrid(generateGrid(20,10))
