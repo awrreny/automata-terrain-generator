@@ -8,15 +8,15 @@ class ColorMore(pg.Color):
     _BLACK = pg.Color(0, 0, 0)
 
     def brighten(self, factor=0.1):
-        return self.lerp(ColorMore._WHITE, factor)
+        return ColorMore(self.lerp(ColorMore._WHITE, factor))
 
 
     def darken(self, factor=0.1):
-        return self.lerp(ColorMore._BLACK, factor)
+        return ColorMore(self.lerp(ColorMore._BLACK, factor))
 
 
     def desaturate(self, factor=0.1):
-        return self.lerp(self.grayscale(), factor)
+        return ColorMore(self.lerp(self.grayscale(), factor))
 
 
 WHITE = ColorMore(255, 255, 255)
