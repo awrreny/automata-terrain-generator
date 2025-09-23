@@ -2,70 +2,12 @@ import random
 from copy import deepcopy
 from time import sleep
 from utils.debug import printgrid
+from utils.neighbours import get_neighbour_proportion, NeighbourStrategy
 from data.terrain import terrains
 
 # to run directly, python -m utils.mapGen
-
-def inBounds(x, y, width, height):
-    return (x in range(width)) and (y in range(height))
-
-
-def getNeighbourProportion(grid, x, y, radius = 3):
-    """
-    Returns the proportion of neighbours (within a given radius) that are set to 1, weighted by euclidean distance (closer = more weight)
-    """
-    height = len(grid)
-    width = len(grid[0])
-    total_weight = 0
-    active_neighbor_weight = 0
-    for dx in range(-radius, radius + 1):
-        for dy in range(-radius, radius + 1):
-
-            if dx == 0 and dy == 0: continue
-            if not inBounds(x+dx, y+dy, width, height): continue
-
-            weight = (dx*dx + dy*dy)**(-0.5)
-            total_weight += weight
-            if grid[y+dy][x+dx]:
-                active_neighbor_weight += weight
-
-    if total_weight == 0:
-        return 0
-
-    return active_neighbor_weight / total_weight
-# king-move neighbours
-# def neighbours(grid, x, y):
-#     height = len(grid)
-#     width = len(grid[0])
-#     for dx in (-1, 0, 1):
-#         for dy in (-1, 0, 1):
-#             if dx == 0 and dy == 0: continue
-#             if not inBounds(x+dx, y+dy, width, height): continue
-#             yield grid[y+dy][x+dx]
-
-
-
-# # manhattan unit neighbours
-# def neighbours(grid, x, y):
-#     height = len(grid)
-#     width = len(grid[0])
-#     for x, y in (0, 1), (0, -1), (-1, 0), (1, 0):
-#         if not inBounds(x, y, width, height): continue
-#         yield grid[y][x]
-
-# mix of both with closer being weighted more
-# def neighbours(grid, x, y):
-#     height = len(grid)
-#     width = len(grid[0])
-#     for dx in (-1, 0, 1):
-#         for dy in (-1, 0, 1):
-#             if dx == 0 and dy == 0: continue
-#             if not inBounds(x+dx, y+dy, width, height): continue
-#             if abs(dy+dx) == 2 and random.random() < 0.5: continue
-#             yield grid[y+dy][x+dx]
-
-
-def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_threshold = 0.4, iterations=1, log=False):
+def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_threshold = 0.4, 
+                iterations=1, log=False, neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE):
     grid = [
         [
             1 if random.random() < initial_density else 0
@@ -93,12 +35,12 @@ def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_
 
         for y in range(height):
             for x in range(width):
-                neighbourProportion = getNeighbourProportion(grid_snapshot, x, y)
+                neighbour_proportion = get_neighbour_proportion(grid_snapshot, x, y, neighbour_strategy)
 
                 if grid_snapshot[y][x]:
-                    grid[y][x] = 1 if neighbourProportion > scaled_survival_threshold else 0
+                    grid[y][x] = 1 if neighbour_proportion > scaled_survival_threshold else 0
                 else:
-                    grid[y][x] = 1 if neighbourProportion > scaled_birth_threshold else 0
+                    grid[y][x] = 1 if neighbour_proportion > scaled_birth_threshold else 0
         
         if grid == grid_snapshot:  # no change in an iteration
             break
@@ -132,20 +74,22 @@ def generateGrid(width, height):
         for y in range(height)
     ]
 
-
+    # Generate forests using weighted distance for organic, natural clusters
     forestGrid = automataGen(width, height, 0.45,
                              survival_threshold=0.3,
                              birth_threshold=0.65,
                              iterations=25,
-                             log=True)
+                             log=True,
+                             neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
     grid = applyGrid(grid, terrains["forest"], forestGrid)
 
-
+    # Generate water bodies using weighted distance strategy
     seaGrid = automataGen(width, height, 0.09,
                              survival_threshold=0.1,
                              birth_threshold=0.35,
                              iterations=25,
-                             log=True)
+                             log=True,
+                             neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
     grid = applyGrid(grid, terrains["sea"], seaGrid)
 
     return grid
