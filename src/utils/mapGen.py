@@ -4,7 +4,7 @@ from time import sleep
 from utils.debug import printgrid
 from utils.neighbours import get_neighbour_proportion, NeighbourStrategy
 from data.terrain import terrains
-from data.terrainconfigs import DEFAULT_TERRAIN_CONFIG
+from data.terrainconfigs import DEFAULT_TERRAIN_CONFIG, DESERT_TERRAIN_CONFIG
 
 # to run directly, python -m utils.mapGen
 def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_threshold = 0.4, 
@@ -65,7 +65,7 @@ def applyGrid(grid, terrainType, bgrid):
 
 
 
-def generateGrid(width, height, log=False, config=DEFAULT_TERRAIN_CONFIG):
+def generateGrid(width, height, log=False, config=DESERT_TERRAIN_CONFIG):
     grid = [
         [
             terrains[config["background"]]

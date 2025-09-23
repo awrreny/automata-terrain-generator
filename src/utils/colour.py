@@ -24,6 +24,8 @@ BLACK = ColorMore(0, 0, 0)
 RED = ColorMore(255, 0, 0)
 GREEN = ColorMore(0, 255, 0)
 BLUE = ColorMore(0, 0, 255)
+YELLOW = ColorMore(255, 255, 0)
+ORANGE = ColorMore(255, 165, 0)
 
 
 # idea: blending colours for borders?

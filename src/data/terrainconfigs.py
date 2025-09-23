@@ -21,3 +21,17 @@ DEFAULT_TERRAIN_CONFIG = {
         }
     ]
 }
+
+DESERT_TERRAIN_CONFIG = {
+    "background": "sand",
+    "overlays": [
+        {
+            "terrain_type": "mountain",
+            "initial_density": 0.2,
+            "survival_threshold": 0.2,
+            "birth_threshold": 0.5,
+            "iterations": 10,
+            "neighbour_strategy": NeighbourStrategy.WEIGHTED_DISTANCE
+        }
+    ]
+}

@@ -4,6 +4,8 @@ from utils.colour import *
 
 GRASS_COLOUR = GREEN.desaturate(0.5)
 WATER_COLOUR = BLUE.desaturate(0.3).brighten(0.4)
+SAND_COLOUR = YELLOW.desaturate(0.3).brighten(0.2)
+MOUNTAIN_COLOUR = ORANGE.desaturate(0.5).brighten(0.1)
 
 class TerrainType:
     def __init__(self, name: str, bg_colour, icon_text, text_colour)  -> None:
@@ -45,3 +47,18 @@ terrains["sea"] = TerrainType(
     text_colour=WATER_COLOUR.darken()
 )
 
+terrains["sand"] = TerrainType(
+    name="sand",
+
+    bg_colour=SAND_COLOUR,
+    icon_text=".",
+    text_colour=SAND_COLOUR.darken()
+)
+
+terrains["mountain"] = TerrainType(
+    name="mountain",
+
+    bg_colour=MOUNTAIN_COLOUR,
+    icon_text="/^\\",
+    text_colour=MOUNTAIN_COLOUR.darken()
+)
