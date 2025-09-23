@@ -28,6 +28,9 @@ def main():
                     grid.regenerate()
                 elif event.key == pg.K_l:
                     grid.regenerate(log=True)
+                elif event.key == pg.K_ESCAPE:
+                    pg.quit()
+                    exit()
         pg.display.flip()
         clock.tick(FPS)
 
