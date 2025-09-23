@@ -79,7 +79,7 @@ def automataGen(width, height, initialChance, stayAliveProp = 0.4, birthProp = 0
     for i in range(iterations):
         if log:
             print()
-            printgrid(grid)
+            printgrid(grid, binary=True)
             print("-"*100,end="")
 
             sleep(0.1)
@@ -142,7 +142,8 @@ def generateGrid(width, height, safeCorners=False, safeCornerSize=3, forestIniti
     forestGrid = automataGen(width, height, 0.45,
                              stayAliveProp=0.3,
                              birthProp=0.65,
-                             iterations=25)
+                             iterations=25,
+                             log=True)
     grid = applyGrid(grid, terrains["forest"], forestGrid)
 
 

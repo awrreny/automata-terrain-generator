@@ -8,7 +8,7 @@ def printgrid(grid, binary=False):
 
     for row in grid:
         if binary:
-            print(*[("██" if tile == 1 else " ") for tile in row],sep="")  #easier viewing of binary grids
+            print(*[("██" if tile == 1 else "  ") for tile in row],sep="")  #easier viewing of binary grids
         else:
             print(*[str(tile).ljust(maxlen) for tile in row])
 
