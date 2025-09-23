@@ -64,7 +64,7 @@ def applyGrid(grid, terrainType, bgrid):
 
 
 
-def generateGrid(width, height):
+def generateGrid(width, height, log=False):
     
     grid = [
         [
@@ -79,7 +79,7 @@ def generateGrid(width, height):
                              survival_threshold=0.3,
                              birth_threshold=0.65,
                              iterations=25,
-                             log=True,
+                             log=log,
                              neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
     grid = applyGrid(grid, terrains["forest"], forestGrid)
 
@@ -88,7 +88,7 @@ def generateGrid(width, height):
                              survival_threshold=0.1,
                              birth_threshold=0.35,
                              iterations=25,
-                             log=True,
+                             log=log,
                              neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
     grid = applyGrid(grid, terrains["sea"], seaGrid)
 

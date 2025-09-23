@@ -25,9 +25,9 @@ class TerrainGrid:
         return self.grid[y][x]
     
 
-    def regenerate(self):
+    def regenerate(self, log=False):
         random.seed()
-        self.grid = generateGrid(self.width, self.height)
+        self.grid = generateGrid(self.width, self.height, log=log)
 
     def tiles(self) -> Iterator[tuple[TerrainType, int, int]]:
         for y, row in enumerate(self.grid):

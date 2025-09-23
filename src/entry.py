@@ -26,6 +26,8 @@ def main():
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     grid.regenerate()
+                elif event.key == pg.K_l:
+                    grid.regenerate(log=True)
         pg.display.flip()
         clock.tick(FPS)
 
