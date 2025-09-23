@@ -6,9 +6,4 @@ TILE_TEXT_SIZE = round(TILE_SIZE*0.72)
 
 FPS = 60
 
-
-TITLE = "Drone Tactics Clone"
-
-
-
-
+TITLE = "Cellular Automata Terrain Generator"
