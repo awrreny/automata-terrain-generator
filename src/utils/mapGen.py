@@ -4,6 +4,7 @@ from time import sleep
 from utils.debug import printgrid
 from utils.neighbours import get_neighbour_proportion, NeighbourStrategy
 from data.terrain import terrains
+from data.terrainconfigs import DEFAULT_TERRAIN_CONFIG
 
 # to run directly, python -m utils.mapGen
 def automataGen(width, height, initial_density, survival_threshold = 0.4, birth_threshold = 0.4, 
@@ -64,32 +65,22 @@ def applyGrid(grid, terrainType, bgrid):
 
 
 
-def generateGrid(width, height, log=False):
-    
+def generateGrid(width, height, log=False, config=DEFAULT_TERRAIN_CONFIG):
     grid = [
         [
-            terrains["grass"]
+            terrains[config["background"]]
             for x in range(width)
         ]
         for y in range(height)
     ]
 
-    # Generate forests using weighted distance for organic, natural clusters
-    forestGrid = automataGen(width, height, 0.45,
-                             survival_threshold=0.3,
-                             birth_threshold=0.65,
-                             iterations=25,
-                             log=log,
-                             neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
-    grid = applyGrid(grid, terrains["forest"], forestGrid)
+    for overlay in config["overlays"]:
+        if log:
+            sleep(1)
 
-    # Generate water bodies using weighted distance strategy
-    seaGrid = automataGen(width, height, 0.09,
-                             survival_threshold=0.1,
-                             birth_threshold=0.35,
-                             iterations=25,
-                             log=log,
-                             neighbour_strategy=NeighbourStrategy.WEIGHTED_DISTANCE)
-    grid = applyGrid(grid, terrains["sea"], seaGrid)
+        automata_params = {k: v for k, v in overlay.items() if k != "terrain_type"}
+        overlay_grid = automataGen(width, height, log=log, **automata_params)
+
+        grid = applyGrid(grid, terrains[overlay["terrain_type"]], overlay_grid)
 
     return grid
