@@ -23,6 +23,9 @@ def main():
             if event.type == pg.QUIT:
                 pg.quit()
                 exit()
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    grid.regenerate()
         pg.display.flip()
         clock.tick(FPS)
 

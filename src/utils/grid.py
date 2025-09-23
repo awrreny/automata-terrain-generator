@@ -1,6 +1,7 @@
 from data.terrain import TerrainType
 from typing import Iterator
 from utils.mapGen import generateGrid
+import random
 
 
 # grid containing TerrainType object from terrains dict
@@ -23,6 +24,10 @@ class TerrainGrid:
         
         return self.grid[y][x]
     
+
+    def regenerate(self):
+        random.seed()
+        self.grid = generateGrid(self.width, self.height)
 
     def tiles(self) -> Iterator[tuple[TerrainType, int, int]]:
         for y, row in enumerate(self.grid):
