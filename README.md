@@ -4,7 +4,7 @@ Procedural 2D terrain generation using cellular automata rules (written in Pytho
 
 ## How To Use
 
-Run with `python src/entry.py`, or `python -m src.entry` from the project root.
+Run with `python src/entry.py` from the project root.
 
 -   `Space` to regenerate the terrain instantly.
 -   `L` to regenerate terrain and watch each cellular automata pass, animated step-by-step in the terminal.
