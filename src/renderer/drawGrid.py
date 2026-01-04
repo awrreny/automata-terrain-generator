@@ -5,13 +5,13 @@ from typing import Tuple
 import pygame as pg
 import random
 
-def randomise_pos(x, y, seed, factor=15):
+
+def randomise_pos(x: int, y: int, seed: int, factor=25):
     random.seed(seed)
     return (
-        x + random.randint(-DEFAULT_TILE_SIZE//factor, DEFAULT_TILE_SIZE//factor),
-        y + random.randint(-DEFAULT_TILE_SIZE//factor, DEFAULT_TILE_SIZE//factor),
+        int(random.gauss(x, DEFAULT_TILE_SIZE//factor)),
+        int(random.gauss(y, DEFAULT_TILE_SIZE//factor)),
     )
-
 
 
 def draw_terrain(grid: TerrainGrid, screen, font: pg.font.Font, startCoords=(0,0)):
