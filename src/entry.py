@@ -7,15 +7,13 @@ import renderer.drawGrid
 def main():
     pg.init()
 
-
     TILE_FONT = pg.font.SysFont(None, TILE_TEXT_SIZE)
     
-    screen = pg.display.set_mode((WIDTH, HEIGHT))
-    # pg.mixer.init() for sound
+    screen = pg.display.set_mode((DEFAULT_GRID_WIDTH * DEFAULT_TILE_SIZE, DEFAULT_GRID_HEIGHT * DEFAULT_TILE_SIZE))
     pg.display.set_caption(TITLE)
     clock = pg.time.Clock()
 
-    grid = utils.grid.TerrainGrid(WIDTH//TILE_SIZE, HEIGHT//TILE_SIZE)
+    grid = utils.grid.TerrainGrid(DEFAULT_GRID_WIDTH, DEFAULT_GRID_HEIGHT)
 
     while True:
         renderer.drawGrid.draw_terrain(grid, screen, TILE_FONT)
