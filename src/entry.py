@@ -1,7 +1,7 @@
 import pygame as pg
 from settings import *
 import utils.grid
-import renderer.drawGrid
+import renderer.gridDrawer
 
 
 def main():
@@ -15,8 +15,9 @@ def main():
 
     grid = utils.grid.TerrainGrid(DEFAULT_GRID_WIDTH, DEFAULT_GRID_HEIGHT)
 
+    grid_drawer = renderer.gridDrawer.GridDrawer(screen, TILE_FONT, grid, DEFAULT_TILE_SIZE)
+    grid_drawer.draw()
     while True:
-        renderer.drawGrid.draw_terrain(grid, screen, TILE_FONT)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -24,8 +25,10 @@ def main():
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     grid.regenerate()
+                    grid_drawer.draw()
                 elif event.key == pg.K_l:
                     grid.regenerate(log=True)
+                    grid_drawer.draw()
                 elif event.key == pg.K_ESCAPE:
                     pg.quit()
                     exit()
